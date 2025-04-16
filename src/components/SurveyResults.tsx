@@ -1,11 +1,14 @@
 
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, FilePdf } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 type SurveyResultsProps = {
   results: SurveyResultData | null;
   isLoading: boolean;
+  onExportPdf: () => void;
 };
 
 // This would be replaced with actual types from your backend API
@@ -19,7 +22,9 @@ type SurveyResultData = {
   recommendations: string[];
 };
 
-const SurveyResults = ({ results, isLoading }: SurveyResultsProps) => {
+const SurveyResults = ({ results, isLoading, onExportPdf }: SurveyResultsProps) => {
+  const { toast } = useToast();
+
   if (isLoading) {
     return (
       <Card className="w-full max-w-3xl mx-auto p-6 mt-8">
@@ -46,7 +51,18 @@ const SurveyResults = ({ results, isLoading }: SurveyResultsProps) => {
 
   return (
     <Card className="w-full max-w-3xl mx-auto p-6 mt-8">
-      <h2 className="text-2xl font-bold mb-6 text-center">Survey Results</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Survey Results</h2>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={onExportPdf}
+          className="flex items-center gap-2"
+        >
+          <FilePdf className="h-4 w-4" />
+          Export to PDF
+        </Button>
+      </div>
       
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-3">

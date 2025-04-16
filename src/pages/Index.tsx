@@ -33,6 +33,8 @@ const Index = () => {
 
   const handleFileUpload = (uploadedFile: File) => {
     setFile(uploadedFile);
+    // Reset results when a new file is uploaded
+    setResults(null);
   };
 
   const processFile = () => {
@@ -52,6 +54,29 @@ const Index = () => {
     }, 3000);
   };
 
+  const resetSurvey = () => {
+    setFile(null);
+    setResults(null);
+    setIsProcessing(false);
+  };
+
+  const handleExportToPdf = () => {
+    // In a real implementation, this would generate a PDF of the results
+    // For now, we'll just show a toast message
+    toast({
+      title: "Export Started",
+      description: "Your survey results are being exported to PDF.",
+    });
+    
+    // Simulate PDF generation delay
+    setTimeout(() => {
+      toast({
+        title: "Export Complete",
+        description: "Survey results have been exported to PDF successfully.",
+      });
+    }, 2000);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -64,9 +89,11 @@ const Index = () => {
           </p>
         </div>
         
-        <FileUpload onFileUpload={handleFileUpload} />
+        {!results && !isProcessing && (
+          <FileUpload onFileUpload={handleFileUpload} />
+        )}
         
-        {file && !results && (
+        {file && !results && !isProcessing && (
           <div className="w-full max-w-3xl mx-auto mt-4 flex justify-center">
             <Button 
               onClick={processFile} 
@@ -79,13 +106,22 @@ const Index = () => {
         )}
         
         {isProcessing && (
-          <SurveyResults results={null} isLoading={true} />
+          <SurveyResults results={null} isLoading={true} onExportPdf={handleExportToPdf} />
         )}
         
         {results && (
           <>
             <Separator className="my-8" />
-            <SurveyResults results={results} isLoading={false} />
+            <SurveyResults results={results} isLoading={false} onExportPdf={handleExportToPdf} />
+            <div className="w-full max-w-3xl mx-auto mt-6 flex justify-center">
+              <Button 
+                variant="outline" 
+                onClick={resetSurvey}
+                className="px-8"
+              >
+                Analyze Another Survey
+              </Button>
+            </div>
           </>
         )}
         

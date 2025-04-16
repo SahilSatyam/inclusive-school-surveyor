@@ -1,7 +1,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertCircle, FilePdf } from "lucide-react";
+import { AlertCircle, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -59,7 +59,7 @@ const SurveyResults = ({ results, isLoading, onExportPdf }: SurveyResultsProps) 
           onClick={onExportPdf}
           className="flex items-center gap-2"
         >
-          <FilePdf className="h-4 w-4" />
+          <FileText className="h-4 w-4" />
           Export to PDF
         </Button>
       </div>

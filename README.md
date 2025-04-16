@@ -1,73 +1,49 @@
-# Welcome to your Lovable project
 
-## Project info
+# Inclusive School Surveyor
 
-**URL**: https://lovable.dev/projects/8b1d7c6b-7fa1-43d1-9a3c-67164dda9ed7
+A React application designed to help educational institutions assess their readiness to serve all students, including those with special needs. The tool allows users to upload survey files (PDF/Excel) and visualizes the analyzed results.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- File upload component supporting PDF and Excel files
+- Visual progress indicator during file processing
+- Interactive dashboard to display survey results
+- Category-based analysis of inclusivity metrics
+- Actionable recommendations based on survey data
 
-**Use Lovable**
+## How It Works
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8b1d7c6b-7fa1-43d1-9a3c-67164dda9ed7) and start prompting.
+1. Upload a survey PDF or Excel file through the drag-and-drop interface
+2. The file is sent to the backend for processing (simulated in this demo)
+3. Results are displayed in an easy-to-understand dashboard format
+4. Review category scores and recommendations for improving inclusivity
 
-Changes made via Lovable will be committed automatically to this repo.
+## Technical Implementation
 
-**Use your preferred IDE**
+- React with TypeScript for frontend development
+- Tailwind CSS for responsive styling
+- Shadcn UI component library
+- File validation and progress tracking
+- Mock data simulation (connect to real backend as needed)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# Install dependencies
+npm install
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Next Steps
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+To integrate with a real backend:
 
-**Use GitHub Codespaces**
+1. Replace the mock data processing in `Index.tsx` with actual API calls
+2. Implement file upload to your server in `FileUpload.tsx`
+3. Update the data types in `SurveyResults.tsx` to match your API response format
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## License
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/8b1d7c6b-7fa1-43d1-9a3c-67164dda9ed7) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This project is licensed under the MIT License.

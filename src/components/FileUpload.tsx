@@ -1,10 +1,10 @@
-
 import { useState } from "react";
-import { UploadCloud, File, AlertCircle, CheckCircle2 } from "lucide-react";
+import { UploadCloud, File, AlertCircle, CheckCircle2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/use-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 type FileUploadProps = {
   onFileUpload: (file: File) => void;
@@ -88,87 +88,135 @@ const FileUpload = ({ onFileUpload }: FileUploadProps) => {
   };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto p-6 border-2 border-dashed bg-white">
-      {uploadStatus === "idle" ? (
-        <div
-          className={`flex flex-col items-center justify-center h-64 transition-all ${
-            isDragging ? "bg-primary/10 border-primary" : "bg-gray-50"
-          }`}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        >
-          <UploadCloud className="h-16 w-16 text-primary mb-4" />
-          <h3 className="text-lg font-medium mb-2">Upload Survey File</h3>
-          <p className="text-sm text-gray-500 mb-4 text-center">
-            Drag and drop your PDF or Excel file here, or click to browse
-          </p>
-          <div className="flex flex-col items-center">
-            <label htmlFor="file-upload">
-              <Button variant="default" className="cursor-pointer" asChild>
-                <span>Choose File</span>
-              </Button>
-              <input
-                id="file-upload"
-                type="file"
-                className="hidden"
-                accept=".pdf,.xls,.xlsx"
-                onChange={handleFileInput}
-              />
-            </label>
-            <p className="text-xs text-gray-400 mt-2">
-              Supported formats: PDF, Excel
+    <Card className="w-full max-w-3xl mx-auto p-6 border-2 border-dashed bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <AnimatePresence mode="wait">
+        {uploadStatus === "idle" ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={`flex flex-col items-center justify-center h-72 transition-all duration-300 ${
+              isDragging ? "bg-primary/5 border-primary scale-105" : "bg-gray-50"
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <motion.div
+              animate={{ scale: isDragging ? 1.1 : 1 }}
+              transition={{ duration: 0.2 }}
+            >
+              <UploadCloud className="h-20 w-20 text-primary mb-6" />
+            </motion.div>
+            <h3 className="text-xl font-semibold mb-3 text-gray-800">Upload Survey File</h3>
+            <p className="text-sm text-gray-500 mb-6 text-center max-w-md">
+              Drag and drop your PDF or Excel file here, or click to browse
             </p>
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-64">
-          <div className="flex items-center space-x-3 mb-4">
-            <File className="h-8 w-8 text-primary" />
-            <div className="text-left">
-              <p className="font-medium truncate w-56">{file?.name}</p>
-              <p className="text-xs text-gray-500">
-                {file?.size ? (file.size / 1024).toFixed(2) + " KB" : ""}
+            <div className="flex flex-col items-center">
+              <label htmlFor="file-upload">
+                <Button 
+                  variant="default" 
+                  className="cursor-pointer px-8 py-6 text-lg shadow-md hover:shadow-lg transition-all duration-200"
+                  asChild
+                >
+                  <span>Choose File</span>
+                </Button>
+                <input
+                  id="file-upload"
+                  type="file"
+                  className="hidden"
+                  accept=".pdf,.xls,.xlsx"
+                  onChange={handleFileInput}
+                />
+              </label>
+              <p className="text-xs text-gray-400 mt-3">
+                Supported formats: PDF, Excel
               </p>
             </div>
-          </div>
-
-          {uploadStatus === "uploading" && (
-            <div className="w-full max-w-sm mb-4">
-              <Progress value={uploadProgress} className="h-2" />
-              <p className="text-xs text-center mt-1">
-                Uploading... {uploadProgress}%
-              </p>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="flex flex-col items-center justify-center h-72"
+          >
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="relative">
+                <File className="h-10 w-10 text-primary" />
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1 -right-1 bg-primary text-white rounded-full p-1"
+                >
+                  <X className="h-3 w-3" />
+                </motion.div>
+              </div>
+              <div className="text-left">
+                <p className="font-medium truncate w-64 text-gray-800">{file?.name}</p>
+                <p className="text-sm text-gray-500">
+                  {file?.size ? (file.size / 1024).toFixed(2) + " KB" : ""}
+                </p>
+              </div>
             </div>
-          )}
 
-          {uploadStatus === "success" && (
-            <div className="flex items-center text-success mb-4">
-              <CheckCircle2 className="mr-2 h-5 w-5" />
-              <span>Upload complete</span>
-            </div>
-          )}
-
-          {uploadStatus === "error" && (
-            <div className="flex items-center text-destructive mb-4">
-              <AlertCircle className="mr-2 h-5 w-5" />
-              <span>Upload failed</span>
-            </div>
-          )}
-
-          <div className="flex space-x-2 mt-2">
-            {uploadStatus === "success" ? (
-              <Button variant="outline" onClick={resetUpload}>
-                Upload Another File
-              </Button>
-            ) : (
-              <Button variant="destructive" onClick={resetUpload}>
-                Cancel
-              </Button>
+            {uploadStatus === "uploading" && (
+              <div className="w-full max-w-sm mb-6">
+                <Progress value={uploadProgress} className="h-2" />
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-sm text-center mt-2 text-gray-600"
+                >
+                  Uploading... {uploadProgress}%
+                </motion.p>
+              </div>
             )}
-          </div>
-        </div>
-      )}
+
+            {uploadStatus === "success" && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center text-success mb-6"
+              >
+                <CheckCircle2 className="mr-2 h-6 w-6" />
+                <span className="text-lg font-medium">Upload complete</span>
+              </motion.div>
+            )}
+
+            {uploadStatus === "error" && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center text-destructive mb-6"
+              >
+                <AlertCircle className="mr-2 h-6 w-6" />
+                <span className="text-lg font-medium">Upload failed</span>
+              </motion.div>
+            )}
+
+            <div className="flex space-x-3 mt-2">
+              {uploadStatus === "success" ? (
+                <Button 
+                  variant="outline" 
+                  onClick={resetUpload}
+                  className="px-6 py-5 text-base hover:bg-gray-100"
+                >
+                  Upload Another File
+                </Button>
+              ) : (
+                <Button 
+                  variant="destructive" 
+                  onClick={resetUpload}
+                  className="px-6 py-5 text-base"
+                >
+                  Cancel
+                </Button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Card>
   );
 };
